@@ -51,6 +51,7 @@ UberShader::UberShader(RenderPass* renderPass) {
             #define GAMMA       1
             #define FALSE_COLOR 2
             #define POS_NEG     3
+            #define XYZ         4
 
             #define ERROR                   0
             #define ABSOLUTE_ERROR          1
@@ -126,6 +127,16 @@ UberShader::UberShader(RenderPass* renderPass) {
                     return falseColor(log2(average(col)+0.03125) / 10.0 + 0.5) + (background.rgb - falseColor(0.0)) * background.a;
                 } else if (tonemap == POS_NEG) {
                     return vec3(-average(min(col, vec3(0.0))) * 2.0, average(max(col, vec3(0.0))) * 2.0, 0.0) + background.rgb * background.a;
+                } else if (tonemap == XYZ) {
+                    mat3 xyz_to_rgb = mat3(
+                        3.240479, -0.969256, 0.055648,
+                        -1.537150, 1.875991, -0.204043,
+                        -0.498535, 0.041556, 1.057311
+                    );
+                    col = xyz_to_rgb * col;
+                    col = col +
+                        (vec3(linear(background.r), linear(background.g), linear(background.b)) - offset) * background.a;
+                    return vec3(sRGB(col.r), sRGB(col.g), sRGB(col.b));
                 }
                 return vec3(0.0);
             }

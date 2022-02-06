@@ -207,7 +207,7 @@ ImageViewer::ImageViewer(const shared_ptr<BackgroundImagesLoader>& imagesLoader,
         makeTonemapButton("Gamma", [this]() { setTonemap(ETonemap::Gamma); });
         makeTonemapButton("FC",    [this]() { setTonemap(ETonemap::FalseColor); });
         makeTonemapButton("+/-",   [this]() { setTonemap(ETonemap::PositiveNegative); });
-
+        makeTonemapButton("XYZ",  [this]() { setTonemap(ETonemap::XYZ); });
         setTonemap(ETonemap::SRGB);
 
         mTonemapButtonContainer->set_tooltip(
@@ -215,6 +215,9 @@ ImageViewer::ImageViewer(const shared_ptr<BackgroundImagesLoader>& imagesLoader,
 
             "sRGB\n"
             "Linear to sRGB conversion\n\n"
+
+            "XYZ\n"
+            "XYZ color space\n\n"
 
             "Gamma\n"
             "Inverse power gamma correction\n\n"

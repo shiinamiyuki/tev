@@ -396,6 +396,22 @@ Vector3f ImageCanvas::applyTonemap(const Vector3f& value, float gamma, ETonemap 
                 result = {-2.0f * mean(min(value, Vector3f{0.0f})), 2.0f * mean(max(value, Vector3f{0.0f})), 0.0f};
                 break;
             }
+        case ETonemap::XYZ:
+            {
+                // float  m[3][3] = {
+                //     {3.240479f, -0.969256f, 0.055648f},
+                //     {-1.537150f, 1.875991f, -0.204043f},
+                //     {-0.498535f, 0.041556f, 1.057311f},
+                // };
+                // Matrix3f xyz_to_rgb;
+                // memcpy(&xyz_to_rgb.m, m, sizeof(float) * 9);
+                // result = xyz_to_rgb * value;
+                result = Vector3f(3.240479f, -0.969256f, 0.055648f) * value.x()
+                    + Vector3f(-1.537150f, 1.875991f, -0.204043f) * value.y()
+                    + Vector3f(-0.498535f, 0.041556f, 1.057311f) * value.z();
+                result = {toSRGB(result.x()), toSRGB(result.y()), toSRGB(result.z())};
+                break;
+            }
         default:
             throw runtime_error{"Invalid tonemap selected."};
     }

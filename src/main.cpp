@@ -221,6 +221,7 @@ int mainFunc(const vector<string>& arguments) {
         "Gamma  - Gamma curve\n"
         "FC     - False Color\n"
         "PN     - Positive=Green, Negative=Red\n"
+        "XYZ    - XYZ color space\n"
         "Default is sRGB.",
         {'t', "tonemap"},
     };
